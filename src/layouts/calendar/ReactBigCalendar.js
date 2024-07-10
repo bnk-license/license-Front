@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import events from "./events";
 import Modal from 'react-modal';
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import axios from "axios";
 
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
@@ -12,6 +13,47 @@ export default function ReactBigCalendar() {
   const [eventsData, setEventsData] = useState(events);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [title, setTitle] = useState();
+
+  const seatHandle = (event) => {
+    axios
+      .get("http://localhost:8080/api/v1/programInfo/calender")
+      .then((response) => {
+
+        response.data.result.calenderResponseDtoList.map((data, index) => { 
+
+          console.log("data.programName:",data.programName);
+          console.log("data.licenseEndDate:",data.licenseEndDate);
+          
+          const licenseEndDate = data.licenseEndDate;
+          const dateParts = licenseEndDate.split('-');
+          const year = parseInt(dateParts[0], 10);
+          const month = parseInt(dateParts[1], 10) - 1;  // 월은 0부터 시작합니다.
+          const day = parseInt(dateParts[2], 10);
+
+          // 날짜 객체 생성
+          const start = new Date(year, month, day);
+          const end = new Date(year, month, day);
+          
+          setEventsData((prevEvents) => [
+            ...prevEvents,
+            {
+              start,
+              end,
+              title: data.programName,
+            },
+          ]);
+
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+  };
+
+  
+  useEffect(() => {
+    seatHandle();
+  },[]);
 
   const customModalStyles: Modal.Styles = {
     overlay: {
@@ -54,6 +96,15 @@ export default function ReactBigCalendar() {
     setModalIsOpen(false);
   };
 
+  const eventStyleGetter = (event, start, end, isSelected) => {
+    const style = {
+      fontSize: '12px', // 원하는 크기로 설정
+    };
+    return {
+      style: style,
+    };
+  };
+
   // const handleSelect = () => {
   //   console.log(start);
   //   console.log(end);
@@ -80,6 +131,7 @@ export default function ReactBigCalendar() {
         style={{ height: "100vh" }}
         onSelectEvent={(event) => openModal()}
         // onSelectSlot={openModal}
+        eventPropGetter={eventStyleGetter}
       />
       <Modal style={customModalStyles} isOpen={modalIsOpen} onRequestClose={closeModal}>
         <h2>제목</h2>

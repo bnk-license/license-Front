@@ -41,6 +41,10 @@ import Categorys from "layouts/categorys/categorys";
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
+  const getCurrentTime = () => {
+    const now = new Date();
+    return now.toLocaleDateString();
+  };
 
   return (
     <DashboardLayout>
@@ -49,7 +53,7 @@ function Dashboard() {
         <ReactBigCalendar />
       </div>
       <MDBox py={3}>
-        <Grid container spacing={3}>
+        {/* <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
@@ -109,7 +113,7 @@ function Dashboard() {
               />
             </MDBox>
           </Grid>
-        </Grid>
+        </Grid> */}
         <MDBox mt={4.5}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={4}>
@@ -125,15 +129,16 @@ function Dashboard() {
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
               <MDBox mb={3}>
-                <ReportsLineChart
+                <ReportsBarChart
                   color="success"
-                  title="daily sales"
+                  title="Expired License"
                   description={
                     <>
-                      (<strong>+15%</strong>) increase in today sales.
+                      {/* (<strong>+15%</strong>)  */}
+                      Licenses Expiring by Month
                     </>
                   }
-                  date="updated 4 min ago"
+                  date={`${getCurrentTime()}`}
                   chart={sales}
                 />
               </MDBox>
@@ -151,7 +156,7 @@ function Dashboard() {
             </Grid>
           </Grid>
         </MDBox>
-        <MDBox>
+        {/* <MDBox>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={8}>
               <Projects />
@@ -160,7 +165,7 @@ function Dashboard() {
               <OrdersOverview />
             </Grid>
           </Grid>
-        </MDBox>
+        </MDBox> */}
       </MDBox>
       <Footer />
     </DashboardLayout>

@@ -10,6 +10,7 @@ import { Modal, Box, Checkbox } from "@mui/material";
 import { useState } from "react";
 import MDInput from "components/MDInput";
 import { Link } from "react-router-dom";
+import Invoices from "../Invoices";
 
 function PaymentMethod() {
   const [modalIsOpen, setModalIsOpen] = useState(false);

@@ -39,22 +39,6 @@ function Tables() {
   const { columns, rows } = authorsTableData();
   const { columns: pColumns, rows: pRows } = projectsTableData();
 
-  const seatHandle = (event) => {
-    axios
-      .get("http://localhost:8080/api/v1/programInfo/calender")
-      .then((response) => {
-        console.log("asdasd"+response.data);
-        // dispatch(seatChk());
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-  };
-
-  useEffect(() => {
-    seatHandle();
-  },[]);
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
