@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
+<<<<<<< HEAD
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import events from "./events";
 import './CustomCalendar.css'; // 커스텀 CSS 파일 경로
 import Modal from 'react-modal';
 
+=======
+import events from "./events";
+import Modal from 'react-modal';
+import "react-big-calendar/lib/css/react-big-calendar.css";
+>>>>>>> 807544fa3c7fd77693b772e264b0b62a3b9bf1aa
 
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
@@ -14,6 +20,7 @@ export default function ReactBigCalendar() {
   const [eventsData, setEventsData] = useState(events);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [title, setTitle] = useState();
+<<<<<<< HEAD
   
   const eventPropGetter = (event, start, end, isSelected) => {
       const now = new Date(new Date().setHours(new Date().getHours() - 3));
@@ -45,6 +52,9 @@ export default function ReactBigCalendar() {
           },
         };
   };
+=======
+
+>>>>>>> 807544fa3c7fd77693b772e264b0b62a3b9bf1aa
   const customModalStyles: Modal.Styles = {
     overlay: {
       backgroundColor: " rgba(0, 0, 0, 0.4)",
@@ -103,7 +113,11 @@ export default function ReactBigCalendar() {
   return (
     <div className="App">
       <Calendar
+<<<<<<< HEAD
         views={[ "month"]}
+=======
+        views={["day", "agenda", "work_week", "month"]}
+>>>>>>> 807544fa3c7fd77693b772e264b0b62a3b9bf1aa
         selectable
         localizer={localizer}
         defaultDate={new Date()}
@@ -111,8 +125,11 @@ export default function ReactBigCalendar() {
         events={eventsData}
         style={{ height: "100vh" }}
         onSelectEvent={(event) => openModal()}
+<<<<<<< HEAD
         eventPropGetter={eventPropGetter}  
         //eventStyleGetter={eventStyleGetter}   
+=======
+>>>>>>> 807544fa3c7fd77693b772e264b0b62a3b9bf1aa
         // onSelectSlot={openModal}
       />
       <Modal style={customModalStyles} isOpen={modalIsOpen} onRequestClose={closeModal}>

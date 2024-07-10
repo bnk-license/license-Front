@@ -8,6 +8,7 @@
     box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.05);
 }
 
+<<<<<<< HEAD
 .category_wrap:hover {
     /* 마우스 호버 시 스타일 */
     background-color: lightgray; 
@@ -25,6 +26,8 @@
     box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.05);
 }
 
+=======
+>>>>>>> 807544fa3c7fd77693b772e264b0b62a3b9bf1aa
 .categorys_wrap {
     color: black;
     width: 100%;
