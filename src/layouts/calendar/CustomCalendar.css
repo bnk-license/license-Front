@@ -1,0 +1,21 @@
+/* CustomCalendar.css */
+/* .rbc-calendar {
+    background-color: #f0f0f0; 
+}  */
+
+/* .rbc-toolbar {
+
+    background-color: #333;    
+}  */
+
+.rbc-event {
+/* 이벤트 스타일 */
+    background-color: #8b0304; /* 예시 이벤트 배경색 */
+    color: white; /* 예시 이벤트 텍스트 색상 */
+}
+
+.rbc-event:hover {
+/* 이벤트 호버 스타일 */
+    background-color: #d7191f; /* 예시 호버 배경색 */
+}
+  
