@@ -46,6 +46,13 @@ function Billing() {
         </MDBox>
         <MDBox mb={3}>
           <Grid container spacing={3}>
+          <Grid item xs={12} lg={12}>
+              <Invoices />
+            </Grid>
+          </Grid>
+        </MDBox>
+        <MDBox mb={3}>
+          <Grid container spacing={3}>
             <Grid item xs={12} md={12}>
               <BillingInformation />
             </Grid>

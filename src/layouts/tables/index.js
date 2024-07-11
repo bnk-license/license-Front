@@ -32,65 +32,21 @@ import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
 import Categorys from "layouts/categorys/categorys";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 function Tables() {
-  const { columns, rows } = authorsTableData();
   const { columns: pColumns, rows: pRows } = projectsTableData();
-
-  const seatHandle = (event) => {
-    axios
-      .get("http://localhost:8080/api/v1/programInfo/calender")
-      .then((response) => {
-        console.log("asdasd"+response.data);
-        // dispatch(seatChk());
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-  };
+  const [category, setCategory] = useState(0);
+  const { columns, rows } = authorsTableData(category);
 
   useEffect(() => {
-    seatHandle();
-  },[]);
+  }, [category]);
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      {/* <Grid container spacing={3}>
-        <Grid item xs={12} md={6} lg={2}>
-          <MDBox mb={1}>
-            asd
-          </MDBox>
-        </Grid>
-        <Grid item xs={12} md={6} lg={2}>
-          <MDBox mb={1}>
-            asd
-          </MDBox>
-        </Grid>
-        <Grid item xs={12} md={6} lg={2}>
-          <MDBox mb={1}>
-            asd
-          </MDBox>
-        </Grid>
-        <Grid item xs={12} md={6} lg={2}>
-          <MDBox mb={1}>
-            asd
-          </MDBox>
-        </Grid>
-        <Grid item xs={12} md={6} lg={2}>
-          <MDBox mb={1}>
-            asd
-          </MDBox>
-        </Grid>
-        <Grid item xs={12} md={6} lg={2}>
-          <MDBox mb={1}>
-            asd
-          </MDBox>
-        </Grid>
-      </Grid> */}
-      <Categorys />
+      <Categorys category={category} setCategory={setCategory}/>
       <MDBox pt={6} pb={3}>
         <Grid container spacing={6}>
           <Grid item xs={12}>
@@ -120,33 +76,6 @@ function Tables() {
               </MDBox>
             </Card>
           </Grid>
-          {/* <Grid item xs={12}>
-            <Card>
-              <MDBox
-                mx={2}
-                mt={-3}
-                py={3}
-                px={2}  
-                variant="gradient"
-                bgColor="info"
-                borderRadius="lg"
-                coloredShadow="info"
-              >
-                <MDTypography variant="h6" color="white">
-                  Projects Table
-                </MDTypography>
-              </MDBox>
-              <MDBox pt={3}>
-                <DataTable
-                  table={{ columns: pColumns, rows: pRows }}
-                  isSorted={false}
-                  entriesPerPage={false}
-                  showTotalEntries={false}
-                  noEndBorder
-                />
-              </MDBox>
-            </Card>
-          </Grid> */}
         </Grid>
       </MDBox>
       <Footer />

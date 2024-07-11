@@ -23,6 +23,7 @@ import MDButton from "components/MDButton";
 
 // Billing page components
 import Invoice from "layouts/billing/components/Invoice";
+import { Icon } from "@mui/material";
 
 function Invoices() {
   return (
@@ -31,8 +32,9 @@ function Invoices() {
         <MDTypography variant="h6" fontWeight="medium">
           Invoices
         </MDTypography>
-        <MDButton variant="outlined" color="info" size="small">
-          view all
+        <MDButton variant="gradient" color="dark">
+          <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+          &nbsp;ADD
         </MDButton>
       </MDBox>
       <MDBox p={2}>
