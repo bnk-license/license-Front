@@ -10,11 +10,7 @@ Coded by www.creative-tim.com
 
  =========================================================
 
-<<<<<<< HEAD
 * The above copyright notnpmice and this permission notice shall be included in all copies or substantial portions of the Software.
-=======
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
->>>>>>> 807544fa3c7fd77693b772e264b0b62a3b9bf1aa
 */
 
 import { forwardRef } from "react";

@@ -21,11 +21,7 @@ Coded by www.creative-tim.com
 
 const colors = {
   background: {
-<<<<<<< HEAD
     default: "#f8f8f8",
-=======
-    default: "#f0f2f5",
->>>>>>> 807544fa3c7fd77693b772e264b0b62a3b9bf1aa
   },
 
   text: {
@@ -112,13 +108,8 @@ const colors = {
     },
 
     info: {
-<<<<<<< HEAD
       main: "#d7191f",
       state: "#d7191f",
-=======
-      main: "#49a3f1",
-      state: "#1A73E8",
->>>>>>> 807544fa3c7fd77693b772e264b0b62a3b9bf1aa
     },
 
     success: {

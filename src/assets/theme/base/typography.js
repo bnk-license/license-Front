@@ -28,11 +28,7 @@ import pxToRem from "assets/theme/functions/pxToRem";
 const { dark } = colors;
 
 const baseProperties = {
-<<<<<<< HEAD
   fontFamily: '"IBM Plex Sans KR", "Roboto", "Helvetica", "Arial", sans-serif',
-=======
-  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
->>>>>>> 807544fa3c7fd77693b772e264b0b62a3b9bf1aa
   fontWeightLighter: 100,
   fontWeightLight: 300,
   fontWeightRegular: 400,

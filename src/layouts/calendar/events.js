@@ -117,15 +117,10 @@ export default [
   {
     id: 14,
     title: "Today",
-<<<<<<< HEAD
     //start: new Date(new Date().setHours(new Date().getHours() - 3)),
     //end: new Date(new Date().setHours(new Date().getHours() + 3)),
     start: now,
     end: now,
-=======
-    start: new Date(new Date().setHours(new Date().getHours() - 3)),
-    end: new Date(new Date().setHours(new Date().getHours() + 3)),
->>>>>>> 807544fa3c7fd77693b772e264b0b62a3b9bf1aa
   },
   {
     id: 15,
@@ -181,7 +176,6 @@ export default [
     start: new Date(2015, 3, 14, 18, 30, 0),
     end: new Date(2015, 3, 14, 20, 0, 0),
   },
-<<<<<<< HEAD
   {
     id: 24,
     title: "Past events",
@@ -206,6 +200,4 @@ export default [
     start: new Date(new Date().setHours(new Date().getHours() - 120)),
     end: new Date(new Date().setHours(new Date().getHours()-118)),
   },
-=======
->>>>>>> 807544fa3c7fd77693b772e264b0b62a3b9bf1aa
 ];
