@@ -28,14 +28,14 @@ import team4 from "assets/images/team-4.jpg";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function data() {
+export default function data(category) {
 
   const [eventsData, setEventsData] = useState([]);
   const [rows, setRows] = useState([]);
   
   const seatHandle = () => {
     axios
-      .get("http://localhost:8080/api/v1/programInfo/table")
+      .get("http://localhost:8080/api/v1/programInfo/table/"+category)
       .then((response) => {
         // API 응답에서 result 안의 tableResponseDtoList를 eventsData로 설정
         setEventsData(response.data.result.tableResponseDtoList);
@@ -47,10 +47,9 @@ export default function data() {
   
   useEffect(() => {
     seatHandle();
-  }, []);
+  }, [category]);
   
   useEffect(() => {
-    // eventsData가 업데이트될 때만 실행되도록 useEffect 안에 추가
     if (eventsData.length > 0) {
       const newRows = eventsData.map((data, index) => ({
         title: <Author name={data.programName} />,
@@ -63,7 +62,7 @@ export default function data() {
                 <MDBox ml={-1}>
                   <MDBadge badgeContent="미사용" color="dark" variant="gradient" size="sm" />
                 </MDBox>
-              ), // 이 부분에서 오타 수정 (data.used)
+              ),
         manager: (<Job title={data.departmentName} description="" />),
         date: (
                 <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
@@ -112,32 +111,6 @@ export default function data() {
       { Header: "납품/판매업체", accessor: "company", align: "center" },
       { Header: "계약(유효)기간", accessor: "expiration", align: "center" },
     ],
-
-    // rows: [
-    //   {
-    //     title: <Author name="windows_Server_2008_R2_STD" />,
-    //     count: <Job title="15" />,
-    //     use: (
-    //       <MDBox ml={-1}>
-    //         <MDBadge badgeContent="사용" color="success" variant="gradient" size="sm" />
-    //       </MDBox>
-    //     ),
-    //     manager: <Job title="전근우 파트너" description="" />,
-    //     date: (
-    //       <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-    //         23/04/18
-    //       </MDTypography>
-    //     ),
-    //     company: (
-    //       <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-    //         밴투스
-    //       </MDTypography>
-    //     ),
-    //     expiration: <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-    //     24/04/18
-    //   </MDTypography>,
-    //   }
-    // ],
 
     rows: rows
   };

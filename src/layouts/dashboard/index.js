@@ -36,25 +36,31 @@ import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 import ReactBigCalendar from "layouts/calendar/ReactBigCalendar";
 
-import Categorys from "layouts/categorys/categorys_calendar";
+import Categorys from "layouts/categorys/categorys";
+import { useEffect, useState } from "react";
 
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
+  const [category, setCategory] = useState(0);
+
   const getCurrentTime = () => {
     const now = new Date();
     return now.toLocaleDateString();
   };
 
+  useEffect(() => {
+  }, [category]);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <div style={{ width: "150%", marginLeft:"15%"}}>
-      <Categorys/>
+      <div style={{}}>
+      <Categorys category={category} setCategory={setCategory}/>
       </div>
 
       <div style={{width: "90%", marginLeft: "30px",padding: "10px"}}>
-        <ReactBigCalendar />
+        <ReactBigCalendar category={category}/>
       </div>
       <h2 style={{marginLeft: "1%", marginTop: "2%", marginBottom:"1%"}}> 라이선스 통계 현황</h2>  
       {/* 부서 선택에 따라 단어가 달라져야함 */}

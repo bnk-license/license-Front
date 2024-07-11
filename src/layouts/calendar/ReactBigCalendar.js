@@ -10,10 +10,9 @@ import axios from "axios";
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
 
-export default function ReactBigCalendar() {
+export default function ReactBigCalendar(category) {
   const [eventsData, setEventsData] = useState(events);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [title, setTitle] = useState();
   
   const eventPropGetter = (event, start, end, isSelected) => {
       const now = new Date(new Date().setHours(new Date().getHours() - 3));
@@ -47,13 +46,12 @@ export default function ReactBigCalendar() {
   };
   const seatHandle = (event) => {
     axios
-      .get("http://localhost:8080/api/v1/programInfo/calender")
+      .get("http://localhost:8080/api/v1/programInfo/calender/"+category.category)
       .then((response) => {
 
         response.data.result.calenderResponseDtoList.map((data, index) => { 
 
-          console.log("data.programName:",data.programName);
-          console.log("data.licenseEndDate:",data.licenseEndDate);
+          console.log("category:",category.category);
           
           const licenseEndDate = data.licenseEndDate;
           const dateParts = licenseEndDate.split('-');
@@ -83,8 +81,9 @@ export default function ReactBigCalendar() {
 
   
   useEffect(() => {
+    setEventsData([]);
     seatHandle();
-  },[]);
+  },[category]);
 
 
   const customModalStyles: Modal.Styles = {
