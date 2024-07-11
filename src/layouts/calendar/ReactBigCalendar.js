@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
-import events from "./events";
-import Modal from 'react-modal';
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import events from "./events";
+import './CustomCalendar.css'; // 커스텀 CSS 파일 경로
+import Modal from 'react-modal';
 import axios from "axios";
 
 moment.locale("en-GB");
@@ -13,7 +14,37 @@ export default function ReactBigCalendar() {
   const [eventsData, setEventsData] = useState(events);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [title, setTitle] = useState();
-
+  
+  const eventPropGetter = (event, start, end, isSelected) => {
+      const now = new Date(new Date().setHours(new Date().getHours() - 3));
+      let backgroundColor = 'red'; // 기본색: 과거 이벤트
+      if (start < now) {
+          backgroundColor = 'gray'; // 미래 이벤트 색상
+      }
+      return {
+        
+          style: {
+            backgroundColor,
+            cursor: 'pointer', // 호버 효과를 위해 포인터 커서 설정
+            transition: 'background-color 0.2s ease', // 부드러운 전환 설정
+          },
+          // 호버 시 배경색 변경
+          onMouseOver: () => {
+              if (start < now) {
+                  backgroundColor = 'lightgray'; // 과거 이벤트 호버 색상
+              } else {
+                  backgroundColor = 'lightcoral'; // 미래 이벤트 호버 색상
+              }
+          },
+          onMouseOut: () => {
+              if (start < now) {
+                  backgroundColor = 'gray';
+              } else {
+                  backgroundColor = 'red';
+              }
+          },
+        };
+  };
   const seatHandle = (event) => {
     axios
       .get("http://localhost:8080/api/v1/programInfo/calender")
@@ -54,6 +85,7 @@ export default function ReactBigCalendar() {
   useEffect(() => {
     seatHandle();
   },[]);
+
 
   const customModalStyles: Modal.Styles = {
     overlay: {
@@ -122,7 +154,7 @@ export default function ReactBigCalendar() {
   return (
     <div className="App">
       <Calendar
-        views={["day", "agenda", "work_week", "month"]}
+        views={[ "month"]}
         selectable
         localizer={localizer}
         defaultDate={new Date()}
@@ -130,10 +162,12 @@ export default function ReactBigCalendar() {
         events={eventsData}
         style={{ height: "100vh" }}
         onSelectEvent={(event) => openModal()}
-        // onSelectSlot={openModal}
-        eventPropGetter={eventStyleGetter}
-      />
-      <Modal style={customModalStyles} isOpen={modalIsOpen} onRequestClose={closeModal}>
+        eventPropGetter={eventPropGetter}  
+        //eventStyleGetter={eventStyleGetter}   
+
+        onRequestClose={closeModal} />
+       <Modal style={customModalStyles} isOpen={modalIsOpen} onRequestClose={closeModal}>
+      
         <h2>제목</h2>
         <p>내용</p>
         {/* <input onChange={(e) => setTitle(e.target.value)} /> */}

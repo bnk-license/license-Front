@@ -36,7 +36,7 @@ import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 import ReactBigCalendar from "layouts/calendar/ReactBigCalendar";
 
-import Categorys from "layouts/categorys/categorys";
+import Categorys from "layouts/categorys/categorys_calendar";
 
 
 function Dashboard() {
@@ -49,22 +49,28 @@ function Dashboard() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
+      <div style={{ width: "150%", marginLeft:"15%"}}>
+      <Categorys/>
+      </div>
+
       <div style={{width: "90%", marginLeft: "30px",padding: "10px"}}>
         <ReactBigCalendar />
       </div>
+      <h2 style={{marginLeft: "1%", marginTop: "2%", marginBottom:"1%"}}> 라이선스 통계 현황</h2>  
+      {/* 부서 선택에 따라 단어가 달라져야함 */}
       <MDBox py={3}>
-        {/* <Grid container spacing={3}>
+        <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
+            <MDBox mb={2}>
               <ComplexStatisticsCard
                 color="dark"
                 icon="weekend"
-                title="Bookings"
+                title="라이선스 보유 개수"
                 count={281}
                 percentage={{
                   color: "success",
-                  amount: "+55%",
-                  label: "than lask week",
+                  amount: "+12%",
+                  label: "than last month",
                 }}
               />
             </MDBox>
@@ -73,8 +79,8 @@ function Dashboard() {
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 icon="leaderboard"
-                title="Today's Users"
-                count="2,300"
+                title="라이선스 총 구매 금액"
+                count="2,300만원"
                 percentage={{
                   color: "success",
                   amount: "+3%",
@@ -88,32 +94,18 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="success"
                 icon="store"
-                title="Revenue"
-                count="34k"
-                percentage={{
-                  color: "success",
-                  amount: "+1%",
-                  label: "than yesterday",
-                }}
+                title="1개월 이내 만료되는 라이선스 개수"
+                count="1개"
+                // percentage={{
+                //   color: "success",
+                //   amount: "+1%",
+                //   label: "than yesterday",
+                // }}
               />
             </MDBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon="person_add"
-                title="Followers"
-                count="+91"
-                percentage={{
-                  color: "success",
-                  amount: "",
-                  label: "Just updated",
-                }}
-              />
-            </MDBox>
-          </Grid>
-        </Grid> */}
+          
+        </Grid>
         <MDBox mt={4.5}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={4}>
@@ -156,7 +148,7 @@ function Dashboard() {
             </Grid>
           </Grid>
         </MDBox>
-        {/* <MDBox>
+        <MDBox>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={8}>
               <Projects />
@@ -165,7 +157,7 @@ function Dashboard() {
               <OrdersOverview />
             </Grid>
           </Grid>
-        </MDBox> */}
+        </MDBox>
       </MDBox>
       <Footer />
     </DashboardLayout>

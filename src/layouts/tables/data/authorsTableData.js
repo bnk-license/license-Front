@@ -64,7 +64,7 @@ export default function data() {
                   <MDBadge badgeContent="미사용" color="dark" variant="gradient" size="sm" />
                 </MDBox>
               ), // 이 부분에서 오타 수정 (data.used)
-        manager: (<Job title={data.manager} description="" />),
+        manager: (<Job title={data.departmentName} description="" />),
         date: (
                 <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
                   {data.introductionDate}

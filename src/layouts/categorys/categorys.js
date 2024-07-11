@@ -7,7 +7,7 @@ function Categorys() {
     return (
         <div className={styles.categorys_wrap}>
             <ul className={styles.categorys_ul}>
-            <Category item={"ALL"}/>
+            <Category item={"ALL"} selected={true}/>
             <Category item={"OS"}/>
             <Category item={"DBMS"}/>
             <Category item={"관리도구"}/>
