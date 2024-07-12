@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import events from "./events";
 import './CustomCalendar.css'; // 커스텀 CSS 파일 경로
 import Modal from 'react-modal';
 import axios from "axios";
@@ -17,8 +16,7 @@ import { useNavigate } from "react-router-dom";
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
 
-export default function ReactBigCalendar(category) {
-  const [eventsData, setEventsData] = useState(events);
+export default function ReactBigCalendar(eventsData) {
   const [info, setInfo] = useState([{}]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
@@ -53,111 +51,15 @@ export default function ReactBigCalendar(category) {
           },
         };
   };
-  const seatHandle = (event) => {
-    axios
-      .get("http://localhost:8080/api/v1/programInfo/calender/"+category.category)
-      .then((response) => {
-
-        response.data.result.calenderResponseDtoList.map((data, index) => { 
-
-          var licenseEndDate = data.licenseEndDate;
-          if(!licenseEndDate){
-            licenseEndDate="9999-12-31";
-          }
-
-          const dateParts = licenseEndDate.split('-');
-          const year = parseInt(dateParts[0], 10);
-          const month = parseInt(dateParts[1], 10) - 1;  // 월은 0부터 시작합니다.
-          const day = parseInt(dateParts[2], 10);
-
-          // 날짜 객체 생성
-          const start = new Date(year, month, day);
-          const end = new Date(year, month, day);
-          
-          setEventsData((prevEvents) => [
-            ...prevEvents,
-            {
-              start,
-              end,
-              title: data.programName,
-              programInfoId: data.programInfoId,
-            },
-          ]);
-
-        });
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-  };
-
-  const licenseHandle = (data) => {
-    axios
-      .get("http://localhost:8080/api/v1/licenseInfo/licenseInfo/"+data)
-      .then((response) => {
-
-        console.log(response.data.result.licenseInfoResponseDtoList);
-        setInfo(response.data.result.licenseInfoResponseDtoList);
-     
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-  };
 
   useEffect(() => {
-    setEventsData([]);
-    seatHandle();
-  },[category]);
+    console.log(eventsData);
+  }, []);
 
   const handleClick = ( event ) => {
     navigate(`/billing/${event.programInfoId}`);
   };
 
-  const customModalStyles = {
-    overlay: {
-      backgroundColor: " rgba(0, 0, 0, 0.4)",
-      width: "100%",
-      height: "100vh",
-      zIndex: "10",
-      position: "fixed",
-      top: "0",
-      left: "0",
-    },
-    content: {  
-      width: "500px",
-      height: "524px",
-      zIndex: "150",
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-      borderRadius: "10px",
-      boxShadow: "2px 2px 2px rgba(0, 0, 0, 0.25)",
-      backgroundColor: "white",
-      justifyContent: "center",
-      overflow: "auto",
-    },
-  };
-
-  const openModal = (event) => {
-    console.log(event);
-    licenseHandle(event.programInfoId);
-    setModalIsOpen(true);
-    };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-
-  const eventStyleGetter = (event, start, end, isSelected) => {
-    const style = {
-      fontSize: '12px', // 원하는 크기로 설정
-    };
-    return {
-      style: style,
-    };
-  };
   return (
     <div className="App">
       <Calendar
@@ -166,53 +68,11 @@ export default function ReactBigCalendar(category) {
         localizer={localizer}
         defaultDate={new Date()}
         defaultView="month"
-        events={eventsData}
+        events={eventsData.eventsData}
         className="custom-calendar" 
-        //onSelectEvent={(event) => openModal(event)}
         onSelectEvent={(event) => handleClick(event)}
         eventPropGetter={eventPropGetter}  
-        //eventStyleGetter={eventStyleGetter}   
-
-        onRequestClose={closeModal} />
-
-       {/* <Modal style={customModalStyles} isOpen={modalIsOpen} onRequestClose={closeModal}> 
-       <Box sx={{ ...customModalStyles.content }}>
-        <Card>
-        <MDBox
-          variant="gradient"
-          bgColor="info"
-          borderRadius="lg"
-          coloredShadow="success"
-          mx={2}
-          mt={-3}
-          p={3}
-          mb={1}
-          textAlign="center"
-        >
-          <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-           자세히 보기    
-          </MDTypography>
-          <MDTypography display="block" variant="button" color="white" my={1}>
-            Enter your email and password to register
-          </MDTypography>
-        </MDBox>
-        <MDBox pt={4} pb={3} px={3}>
-          <MDBox p={2}>
-            <MDBox component="ul" display="flex" flexDirection="column" p={0} m={0}>
-            {info.map((item, index) => (
-              <Detail key={item.programInfoId} date={item.hostName} id={item.hostIp} price="" />
-            ))}
-            </MDBox>
-          </MDBox>
-            <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="secondary" fullWidth onClick={closeModal}>
-                닫기
-              </MDButton>
-            </MDBox>  
-        </MDBox>
-      </Card>
-        </Box>
-      </Modal> */}
+        />
     </div>
   );
 }

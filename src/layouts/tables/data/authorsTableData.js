@@ -80,7 +80,7 @@ export default function data(category) {
                   {data.supplierName}
                 </MDTypography>
               ),
-        expiration: (<MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">{data.licenseEndDate}</MDTypography>),
+        expiration: (<MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">{data.licenseEndDate?data.licenseEndDate:"영구"}</MDTypography>),
       }));
       setRows(newRows);
     }

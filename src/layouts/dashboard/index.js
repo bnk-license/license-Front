@@ -46,7 +46,7 @@ function Dashboard() {
   const [ lineChart, setLineChart ] = useState(reportsLineChartData);
   const [category, setCategory] = useState(0);
   const [stats, setStats] = useState({licenseCount: 0, licenseCost: 0, notUsedLicenseCount: 0, notUsedLicenseCost: 0});
-
+  const [eventsData, setEventsData] = useState(["asdasd"]);
   const getCurrentTime = () => {
     const now = new Date();
     return now.toLocaleDateString();
@@ -88,8 +88,41 @@ function Dashboard() {
       });
 
   };
+
+  const seatHandle = () => {
+    axios
+      .get("http://localhost:8080/api/v1/programInfo/calender/"+category)
+      .then((response) => {
+        const newEvents = response.data.result.calenderResponseDtoList.map((data) => {
+
+          let licenseEndDate = data.licenseEndDate || "9999-12-31";
+          const dateParts = licenseEndDate.split('-');
+          const year = parseInt(dateParts[0], 10);
+          const month = parseInt(dateParts[1], 10) - 1; // 월은 0부터 시작합니다.
+          const day = parseInt(dateParts[2], 10);
+
+          // 날짜 객체 생성
+          const start = new Date(year, month, day);
+          const end = new Date(year, month, day);
+
+          return {
+            start,
+            end,
+            title: data.programName,
+            programInfoId: data.programInfoId,
+          };
+        });
+
+        setEventsData(newEvents);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+  };
   
   useEffect(() => {
+    setEventsData([]);
+    seatHandle();
     statsHandle();
   }, [category]);
 
@@ -101,7 +134,7 @@ function Dashboard() {
       </div>
 
       <div style={{width: "90%", marginLeft: "30px",padding: "10px"}}>
-        <ReactBigCalendar category={category}/>
+        <ReactBigCalendar category={category} eventsData={eventsData}/>
       </div>
       <h2 style={{marginLeft: "1%", marginTop: "2%", marginBottom:"1%"}}> 라이선스 통계 현황</h2>  
       {/* 부서 선택에 따라 단어가 달라져야함 */}
