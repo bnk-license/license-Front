@@ -27,9 +27,10 @@ import MDButton from "components/MDButton";
 // Material Dashboard 2 React context
 import { useMaterialUIController } from "context";
 
-function Bill({ name, company, email, vat, noGutter }) {
+function Bill({ name, company, email, noGutter }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
+  console.log(name);
 
   return (
     <MDBox
@@ -68,7 +69,7 @@ function Bill({ name, company, email, vat, noGutter }) {
         </MDBox>
         <MDBox mb={1} lineHeight={0}>
           <MDTypography variant="caption" color="text">
-            Company Name:&nbsp;&nbsp;&nbsp;
+            호스트 아이피:&nbsp;&nbsp;&nbsp;
             <MDTypography variant="caption" fontWeight="medium" textTransform="capitalize">
               {company}
             </MDTypography>
@@ -76,18 +77,12 @@ function Bill({ name, company, email, vat, noGutter }) {
         </MDBox>
         <MDBox mb={1} lineHeight={0}>
           <MDTypography variant="caption" color="text">
-            Email Address:&nbsp;&nbsp;&nbsp;
+            비고 :&nbsp;&nbsp;&nbsp;
             <MDTypography variant="caption" fontWeight="medium">
               {email}
             </MDTypography>
           </MDTypography>
         </MDBox>
-        <MDTypography variant="caption" color="text">
-          VAT Number:&nbsp;&nbsp;&nbsp;
-          <MDTypography variant="caption" fontWeight="medium">
-            {vat}
-          </MDTypography>
-        </MDTypography>
       </MDBox>
     </MDBox>
   );
@@ -103,7 +98,6 @@ Bill.propTypes = {
   name: PropTypes.string.isRequired,
   company: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  vat: PropTypes.string.isRequired,
   noGutter: PropTypes.bool,
 };
 

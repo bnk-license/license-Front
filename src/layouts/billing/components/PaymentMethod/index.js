@@ -7,14 +7,16 @@ import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
 import { useMaterialUIController } from "context";  
 import { Modal, Box, Checkbox } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MDInput from "components/MDInput";
-import { Link } from "react-router-dom";
-import Invoices from "../Invoices";
+import axios from "axios";
 
-function PaymentMethod() {
+function PaymentMethod(programInfoId) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [controller] = useMaterialUIController();
+  const [useName, setUseName] = useState(); 
+  const [useProductName, setUseProductName] = useState(); 
+
   const { darkMode } = controller;
 
   const customModalStyles = {
@@ -43,6 +45,35 @@ function PaymentMethod() {
     },
   };
 
+
+  const getUseProductName = () => {
+    axios
+    .get("http://localhost:8080/api/v1/programInfo/useProductName/" + 55)
+    // .get("http://localhost:8080/api/v1/programInfo/useProductName/" + programInfoId)
+    .then((response) => {
+
+      setUseProductName(response.data.result.useProductName); 
+
+    }).catch((error) => {
+      console.error("Error fetching data: ", error);
+    });
+  }
+
+
+  const getUseName = () => {
+    axios
+    .get("http://localhost:8080/api/v1/programInfo/useName/" + 55)
+    // .get("http://localhost:8080/api/v1/programInfo/useName/" + programInfoId)
+    .then((response) => {
+
+      setUseName(response.data.result.useName); 
+
+    }).catch((error) => {
+      console.error("Error fetching data: ", error);
+    });
+  }
+
+
   const openModal = () => {
     setModalIsOpen(true);
   };
@@ -51,11 +82,17 @@ function PaymentMethod() {
     setModalIsOpen(false);
   };
 
+
+  useEffect(() => {
+    getUseName();
+    getUseProductName();
+  },[]);
+
   return (
     <Card id="delete-account">
       <MDBox pt={2} px={2} display="flex" justifyContent="space-between" alignItems="center">
         <MDTypography variant="h6" fontWeight="medium">
-          Name
+          계약 정보 
         </MDTypography>
       </MDBox>
       <MDBox p={2}>
@@ -76,7 +113,7 @@ function PaymentMethod() {
                 계약명
               </MDBox>
               <MDTypography variant="h6" fontWeight="medium">
-                캐피탈 모바일홈 ASP 서비스
+                {useName}
               </MDTypography>
               <MDBox ml="auto" lineHeight={0} color={darkMode ? "white" : "dark"}>
                 <Tooltip title="Edit Card" placement="top">
@@ -103,7 +140,7 @@ function PaymentMethod() {
                 제품명
               </MDBox>
               <MDTypography variant="h6" fontWeight="medium">
-                POLESTAR for Framework
+                {useProductName}
               </MDTypography>
               <MDBox ml="auto" lineHeight={0} color={darkMode ? "white" : "dark"}>
                 <Tooltip title="Edit Card" placement="top">

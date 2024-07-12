@@ -35,12 +35,14 @@ import Transactions from "layouts/billing/components/Transactions";
 function Billing() {
   return (
     <DashboardLayout>
-      <DashboardNavbar absolute isMini />
+      <DashboardNavbar absolute isMini name ={"현황자세히 보기"}/>
       <MDBox mt={8}>
         <MDBox mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={12}>
-              <PaymentMethod />
+              <PaymentMethod
+                programInfoId = {55}
+              />
             </Grid>
           </Grid>
         </MDBox>

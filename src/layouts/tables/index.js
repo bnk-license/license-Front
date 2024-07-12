@@ -45,7 +45,7 @@ function Tables() {
 
   return (
     <DashboardLayout>
-      <DashboardNavbar />
+      <DashboardNavbar name={"테이블로 확인하기"}/>
       <Categorys category={category} setCategory={setCategory}/>
       <MDBox pt={6} pb={3}>
         <Grid container spacing={6}>

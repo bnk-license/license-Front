@@ -71,7 +71,7 @@ function Dashboard() {
 
   return (
     <DashboardLayout>
-      <DashboardNavbar />
+      <DashboardNavbar name={"중요정보 한눈에 보기"}/>
       <div style={{}}>
       <Categorys category={category} setCategory={setCategory}/>
       </div>
