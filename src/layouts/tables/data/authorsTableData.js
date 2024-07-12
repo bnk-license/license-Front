@@ -106,7 +106,7 @@ export default function data(category) {
       { Header: "프로그램명", accessor: "title", align: "left" },
       { Header: "수량", accessor: "count", align: "left" },
       { Header: "사용여부", accessor: "use", align: "center" },
-      { Header: "사용담당자", accessor: "manager", align: "center" },
+      { Header: "사용부서", accessor: "manager", align: "center" },
       { Header: "최초구매/도입(검수)일", accessor: "date", align: "center" },
       { Header: "납품/판매업체", accessor: "company", align: "center" },
       { Header: "계약(유효)기간", accessor: "expiration", align: "center" },

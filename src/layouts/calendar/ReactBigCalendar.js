@@ -56,6 +56,8 @@ export default function ReactBigCalendar(category) {
       .then((response) => {
 
         response.data.result.calenderResponseDtoList.map((data, index) => { 
+
+          console.log("data:",data);
           
           var licenseEndDate = data.licenseEndDate;
           if(!licenseEndDate){
