@@ -17,6 +17,7 @@ const localizer = momentLocalizer(moment);
 
 export default function ReactBigCalendar(category) {
   const [eventsData, setEventsData] = useState(events);
+  const [info, setInfo] = useState([{}]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   
   const eventPropGetter = (event, start, end, isSelected) => {
@@ -55,10 +56,12 @@ export default function ReactBigCalendar(category) {
       .then((response) => {
 
         response.data.result.calenderResponseDtoList.map((data, index) => { 
-
-          console.log("category:",category.category);
           
-          const licenseEndDate = data.licenseEndDate;
+          var licenseEndDate = data.licenseEndDate;
+          if(!licenseEndDate){
+            licenseEndDate="9999-12-31";
+          }
+
           const dateParts = licenseEndDate.split('-');
           const year = parseInt(dateParts[0], 10);
           const month = parseInt(dateParts[1], 10) - 1;  // 월은 0부터 시작합니다.
@@ -78,6 +81,20 @@ export default function ReactBigCalendar(category) {
           ]);
 
         });
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+  };
+
+  const licenseHandle = () => {
+    axios
+      .get("http://localhost:8080/api/v1/licenseInfo/licenseInfo/55")
+      .then((response) => {
+
+        console.log(response.data.result.licenseInfoResponseDtoList);
+        setInfo(response.data.result.licenseInfoResponseDtoList);
+     
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
@@ -117,6 +134,8 @@ export default function ReactBigCalendar(category) {
 
   const openModal = (event) => {
     console.log(event.title);
+    licenseHandle();
+    console.log(info);
     setModalIsOpen(true);
     };
 
@@ -163,13 +182,20 @@ export default function ReactBigCalendar(category) {
           textAlign="center"
         >
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-            Join us today
+            Join us today    
           </MDTypography>
           <MDTypography display="block" variant="button" color="white" my={1}>
             Enter your email and password to register
           </MDTypography>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
+          {info.map((item, index) => (
+              <li key={index}>
+                <strong>programInfoId:</strong> {item.programInfoId} <br />
+                <strong>hostName:</strong> {item.hostName} <br />
+                <strong>hostIp:</strong> {item.hostIp}
+              </li>
+            ))}
           <MDBox component="form" role="form">
             <MDBox mb={2}>
               <MDInput type="text" label="Name" variant="standard" fullWidth />

@@ -38,18 +38,35 @@ import ReactBigCalendar from "layouts/calendar/ReactBigCalendar";
 
 import Categorys from "layouts/categorys/categorys";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
   const [category, setCategory] = useState(0);
+  const [stats, setStats] = useState({licenseCount: 0, licenseCost: 0, notUsedLicenseCount: 0, notUsedLicenseCost: 0});
 
   const getCurrentTime = () => {
     const now = new Date();
     return now.toLocaleDateString();
   };
 
+  const statsHandle = () => {
+    axios
+      .get("http://localhost:8080/api/v1/programInfo/header/"+category)
+      .then((response) => {
+
+        console.log(response.data.result);
+        setStats(response.data.result);
+
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+  };
+
   useEffect(() => {
+    statsHandle();
   }, [category]);
 
   return (
@@ -71,13 +88,13 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="dark"
                 icon="weekend"
-                title="라이선스 보유 개수"
-                count={281}
-                percentage={{
-                  color: "success",
-                  amount: "+12%",
-                  label: "than last month",
-                }}
+                title="만료임박 제품개수"
+                count={stats.licenseCount?(stats.licenseCount.toLocaleString()+"개"):"0개"}
+                // percentage={{
+                //   color: "success",
+                //   amount: "+12%",
+                //   label: "than last month",
+                // }}
               />
             </MDBox>
           </Grid>
@@ -85,13 +102,13 @@ function Dashboard() {
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 icon="leaderboard"
-                title="라이선스 총 구매 금액"
-                count="2,300만원"
-                percentage={{
-                  color: "success",
-                  amount: "+3%",
-                  label: "than last month",
-                }}
+                title="재구매시 지출예상비용"
+                count={stats.licenseCost?(stats.licenseCost.toLocaleString()+"원"):"0원"}
+                // percentage={{
+                //   color: "success",
+                //   amount: "+3%",
+                //   label: "than last month",
+                // }}
               />
             </MDBox>
           </Grid>
@@ -100,8 +117,8 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="success"
                 icon="store"
-                title="1개월 이내 만료되는 라이선스 개수"
-                count="1개"
+                title="미사용 라이선스 개수"
+                count={stats.notUsedLicenseCount?(stats.notUsedLicenseCount.toLocaleString()+"개"):"0개"}
                 // percentage={{
                 //   color: "success",
                 //   amount: "+1%",
@@ -110,7 +127,21 @@ function Dashboard() {
               />
             </MDBox>
           </Grid>
-          
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="primary"
+                icon="person_add"
+                title="절감가능비용"
+                count={stats.notUsedLicenseCost?(stats.notUsedLicenseCost.toLocaleString()+"원"):"0원"}
+                // percentage={{
+                //   color: "success",
+                //   amount: "",
+                //   label: "Just updated",
+                // }}
+              />
+            </MDBox>
+          </Grid>
         </Grid>
         <MDBox mt={4.5}>
           <Grid container spacing={3}>
