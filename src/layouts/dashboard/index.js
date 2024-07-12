@@ -42,7 +42,8 @@ import axios from "axios";
 
 
 function Dashboard() {
-  const { sales, tasks } = reportsLineChartData;
+  const [ barChart, setBarChart ] = useState(reportsBarChartData);
+  const [ lineChart, setLineChart ] = useState(reportsLineChartData);
   const [category, setCategory] = useState(0);
   const [stats, setStats] = useState({licenseCount: 0, licenseCost: 0, notUsedLicenseCount: 0, notUsedLicenseCost: 0});
 
@@ -63,8 +64,31 @@ function Dashboard() {
       .catch((error) => {
         console.error("Error fetching data: ", error);
       });
-  };
 
+      axios
+      .get("http://localhost:8080/api/v1/programInfo/graph/"+category+"/2024")
+      .then((response) => {
+        
+        console.log(response.data.result);
+        console.log(reportsLineChartData.datasets.data);
+
+        const updatedBarChartData = { ...reportsBarChartData };
+        const updatedLineChartData = { ...reportsLineChartData };
+
+        response.data.result.graphResponseDtoList.map((item, index) => {
+          updatedBarChartData.datasets.data[item.month-1]=item.licenseCost;
+          updatedLineChartData.datasets.data[item.month-1]=item.licenseCount;
+        });
+
+        setBarChart(updatedBarChartData);
+        setLineChart(updatedLineChartData);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+
+  };
+  
   useEffect(() => {
     statsHandle();
   }, [category]);
@@ -145,22 +169,22 @@ function Dashboard() {
         </Grid>
         <MDBox mt={4.5}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={4}>
+            <Grid item xs={12} md={6} lg={6}>
               <MDBox mb={3}>
                 <ReportsBarChart
                   color="info"
-                  title="website views"
-                  description="Last Campaign Performance"
-                  date="campaign sent 2 days ago"
-                  chart={reportsBarChartData}
+                  title="Expired License Cost"
+                  description="Licenses Expiring by Month"
+                  date={`${getCurrentTime()}`}
+                  chart={barChart}
                 />
               </MDBox>
             </Grid>
-            <Grid item xs={12} md={6} lg={4}>
+            <Grid item xs={12} md={6} lg={6}>
               <MDBox mb={3}>
                 <ReportsBarChart
                   color="success"
-                  title="Expired License"
+                  title="Expired License Count"
                   description={
                     <>
                       {/* (<strong>+15%</strong>)  */}
@@ -168,18 +192,7 @@ function Dashboard() {
                     </>
                   }
                   date={`${getCurrentTime()}`}
-                  chart={sales}
-                />
-              </MDBox>
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={3}>
-                <ReportsLineChart
-                  color="dark"
-                  title="completed tasks"
-                  description="Last Campaign Performance"
-                  date="just updated"
-                  chart={tasks}
+                  chart={lineChart}
                 />
               </MDBox>
             </Grid>

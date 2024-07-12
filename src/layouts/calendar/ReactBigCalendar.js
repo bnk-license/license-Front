@@ -11,6 +11,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
+import Detail from "layouts/dashboard/components/Detail";
 
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
@@ -57,8 +58,6 @@ export default function ReactBigCalendar(category) {
 
         response.data.result.calenderResponseDtoList.map((data, index) => { 
 
-          console.log("data:",data);
-          
           var licenseEndDate = data.licenseEndDate;
           if(!licenseEndDate){
             licenseEndDate="9999-12-31";
@@ -79,6 +78,7 @@ export default function ReactBigCalendar(category) {
               start,
               end,
               title: data.programName,
+              programInfoId: data.programInfoId,
             },
           ]);
 
@@ -89,9 +89,9 @@ export default function ReactBigCalendar(category) {
       });
   };
 
-  const licenseHandle = () => {
+  const licenseHandle = (data) => {
     axios
-      .get("http://localhost:8080/api/v1/licenseInfo/licenseInfo/55")
+      .get("http://localhost:8080/api/v1/licenseInfo/licenseInfo/"+data)
       .then((response) => {
 
         console.log(response.data.result.licenseInfoResponseDtoList);
@@ -118,7 +118,7 @@ export default function ReactBigCalendar(category) {
       top: "0",
       left: "0",
     },
-    content: {
+    content: {  
       width: "500px",
       height: "524px",
       zIndex: "150",
@@ -135,9 +135,8 @@ export default function ReactBigCalendar(category) {
   };
 
   const openModal = (event) => {
-    console.log(event.title);
-    licenseHandle();
-    console.log(info);
+    console.log(event);
+    licenseHandle(event.programInfoId);
     setModalIsOpen(true);
     };
 
@@ -191,34 +190,18 @@ export default function ReactBigCalendar(category) {
           </MDTypography>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
-          {info.map((item, index) => (
-              <li key={index}>
-                <strong>programInfoId:</strong> {item.programInfoId} <br />
-                <strong>hostName:</strong> {item.hostName} <br />
-                <strong>hostIp:</strong> {item.hostIp}
-              </li>
+          <MDBox p={2}>
+            <MDBox component="ul" display="flex" flexDirection="column" p={0} m={0}>
+            {info.map((item, index) => (
+              <Detail key={item.programInfoId} date={item.hostName} id={item.hostIp} price="" />
             ))}
-          <MDBox component="form" role="form">
-            <MDBox mb={2}>
-              <MDInput type="text" label="Name" variant="standard" fullWidth />
             </MDBox>
-            <MDBox mb={2}>
-              <MDInput type="email" label="Email" variant="standard" fullWidth />
-            </MDBox>
-            <MDBox mb={2}>
-              <MDInput type="password" label="Password" variant="standard" fullWidth />
-            </MDBox>
-            <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
-                저장
-              </MDButton>
-            </MDBox>
+          </MDBox>
             <MDBox mt={4} mb={1}>
               <MDButton variant="gradient" color="secondary" fullWidth onClick={closeModal}>
                 닫기
               </MDButton>
             </MDBox>  
-          </MDBox>
         </MDBox>
       </Card>
         </Box>

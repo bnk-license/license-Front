@@ -14,12 +14,6 @@ Coded by www.creative-tim.com
 */
 
 export default {
-  sales: {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    datasets: { label: "Expired License", data: [5, 8, 2, 6, 11, 10, 5, 7, 3, 0, 1, 4] },
-  },
-  tasks: {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    datasets: { label: "Desktop apps", data: [50, 40, 300, 50, 40, 300, 220, 500, 250, 400, 230, 500] },
-  },
+  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  datasets: { label: "Count", data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
 };
