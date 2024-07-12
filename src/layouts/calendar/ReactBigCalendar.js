@@ -12,6 +12,7 @@ import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import Detail from "layouts/dashboard/components/Detail";
+import { useNavigate } from "react-router-dom";
 
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
@@ -20,7 +21,8 @@ export default function ReactBigCalendar(category) {
   const [eventsData, setEventsData] = useState(events);
   const [info, setInfo] = useState([{}]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  
+  const navigate = useNavigate();
+
   const eventPropGetter = (event, start, end, isSelected) => {
       const now = new Date(new Date().setHours(new Date().getHours() - 3));
       let backgroundColor = 'red'; // 기본색: 과거 이벤트
@@ -108,6 +110,10 @@ export default function ReactBigCalendar(category) {
     seatHandle();
   },[category]);
 
+  const handleClick = ( event ) => {
+    navigate(`/billing/${event.programInfoId}`);
+  };
+
   const customModalStyles = {
     overlay: {
       backgroundColor: " rgba(0, 0, 0, 0.4)",
@@ -161,14 +167,15 @@ export default function ReactBigCalendar(category) {
         defaultDate={new Date()}
         defaultView="month"
         events={eventsData}
-        style={{ height: "100vh" }}
-        onSelectEvent={(event) => openModal(event)}
+        className="custom-calendar" 
+        //onSelectEvent={(event) => openModal(event)}
+        onSelectEvent={(event) => handleClick(event)}
         eventPropGetter={eventPropGetter}  
         //eventStyleGetter={eventStyleGetter}   
 
         onRequestClose={closeModal} />
 
-       <Modal style={customModalStyles} isOpen={modalIsOpen} onRequestClose={closeModal}> 
+       {/* <Modal style={customModalStyles} isOpen={modalIsOpen} onRequestClose={closeModal}> 
        <Box sx={{ ...customModalStyles.content }}>
         <Card>
         <MDBox
@@ -183,7 +190,7 @@ export default function ReactBigCalendar(category) {
           textAlign="center"
         >
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-            Join us today    
+           자세히 보기    
           </MDTypography>
           <MDTypography display="block" variant="button" color="white" my={1}>
             Enter your email and password to register
@@ -205,7 +212,7 @@ export default function ReactBigCalendar(category) {
         </MDBox>
       </Card>
         </Box>
-      </Modal>
+      </Modal> */}
     </div>
   );
 }

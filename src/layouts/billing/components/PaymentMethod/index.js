@@ -10,12 +10,14 @@ import { Modal, Box, Checkbox } from "@mui/material";
 import { useEffect, useState } from "react";
 import MDInput from "components/MDInput";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 function PaymentMethod(programInfoId) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [controller] = useMaterialUIController();
   const [useName, setUseName] = useState(); 
   const [useProductName, setUseProductName] = useState(); 
+  const { id } = useParams();
 
   const { darkMode } = controller;
 
@@ -48,8 +50,7 @@ function PaymentMethod(programInfoId) {
 
   const getUseProductName = () => {
     axios
-    .get("http://localhost:8080/api/v1/programInfo/useProductName/" + 55)
-    // .get("http://localhost:8080/api/v1/programInfo/useProductName/" + programInfoId)
+    .get("http://localhost:8080/api/v1/programInfo/useProductName/" + id)
     .then((response) => {
 
       setUseProductName(response.data.result.useProductName); 
@@ -62,10 +63,8 @@ function PaymentMethod(programInfoId) {
 
   const getUseName = () => {
     axios
-    .get("http://localhost:8080/api/v1/programInfo/useName/" + 55)
-    // .get("http://localhost:8080/api/v1/programInfo/useName/" + programInfoId)
+    .get("http://localhost:8080/api/v1/programInfo/useName/" + id)
     .then((response) => {
-
       setUseName(response.data.result.useName); 
 
     }).catch((error) => {

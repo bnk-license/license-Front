@@ -26,19 +26,20 @@ import Invoice from "layouts/billing/components/Invoice";
 import { Icon } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 function Invoices(programInfoId) {
 
   const [departmentList, setDepartmentList] = useState([]); 
   const [invoice, setInvoice] = useState([]); 
+  const { id } = useParams();
 
   const getDepartmentList = () => {
     axios
-    .get("http://localhost:8080/api/v1/programInfo/department/" + 55)
-    // .get("http://localhost:8080/api/v1/programInfo/department"+ programInfoId)
+    .get("http://localhost:8080/api/v1/programInfo/department/" + id)
     .then((response) => {
 
-      console.log(""+ response.data.result.departmentResponseDtoList)
+      console.log("부서 정보id:"+ id)
       setDepartmentList(response.data.result.departmentResponseDtoList); 
 
     }).catch((error) => {

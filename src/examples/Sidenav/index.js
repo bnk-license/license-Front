@@ -190,7 +190,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           color={sidenavColor}
           fullWidth
         >
-          ???
+          로그아웃
         </MDButton>
       </MDBox>
     </SidenavRoot>

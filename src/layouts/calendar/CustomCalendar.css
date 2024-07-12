@@ -19,3 +19,23 @@
     background-color: #d7191f; /* 예시 호버 배경색 */
 }
   
+
+.custom-calendar {
+    height: 70vh; /* 캘린더의 높이를 줄입니다. */
+    width: 80%; /* 캘린더의 너비를 줄입니다. */
+    margin: 0 auto; /* 캘린더를 중앙에 정렬합니다. */
+  }
+  
+  .custom-calendar .rbc-event {
+    font-size: 12px; /* 이벤트 텍스트의 크기를 줄입니다. */
+    padding: 2px; /* 이벤트 박스의 패딩을 줄입니다. */
+    height: 20px; /* 이벤트 박스의 높이를 줄입니다. */
+  }
+  
+  .custom-calendar .rbc-month-view .rbc-header {
+    font-size: 14px; /* 헤더 텍스트 크기를 줄입니다. */
+  }
+  
+  .custom-calendar .rbc-day-bg {
+    padding: 2px; /* 일간 배경의 패딩을 줄입니다. */
+  }

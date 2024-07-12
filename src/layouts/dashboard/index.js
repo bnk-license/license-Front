@@ -127,7 +127,7 @@ function Dashboard() {
               <ComplexStatisticsCard
                 icon="leaderboard"
                 title="재구매시 지출예상비용"
-                count={stats.licenseCost?(stats.licenseCost.toLocaleString()+"원"):"0원"}
+                count={stats.licenseCost?((stats.licenseCost/1000).toLocaleString()+"천원"):"0원"}
                 // percentage={{
                 //   color: "success",
                 //   amount: "+3%",
@@ -157,7 +157,7 @@ function Dashboard() {
                 color="primary"
                 icon="person_add"
                 title="절감가능비용"
-                count={stats.notUsedLicenseCost?(stats.notUsedLicenseCost.toLocaleString()+"원"):"0원"}
+                count={stats.notUsedLicenseCost?((stats.notUsedLicenseCost/1000).toLocaleString()+"천원"):"0원"}
                 // percentage={{
                 //   color: "success",
                 //   amount: "",
@@ -173,8 +173,8 @@ function Dashboard() {
               <MDBox mb={3}>
                 <ReportsBarChart
                   color="info"
-                  title="Expired License Cost"
-                  description="Licenses Expiring by Month"
+                  title="월별구매비용"
+                  description="(단위:원)"
                   date={`${getCurrentTime()}`}
                   chart={barChart}
                 />
@@ -184,13 +184,8 @@ function Dashboard() {
               <MDBox mb={3}>
                 <ReportsBarChart
                   color="success"
-                  title="Expired License Count"
-                  description={
-                    <>
-                      {/* (<strong>+15%</strong>)  */}
-                      Licenses Expiring by Month
-                    </>
-                  }
+                  title="월별구매개수"
+                  description="(단위:개)"
                   date={`${getCurrentTime()}`}
                   chart={lineChart}
                 />
@@ -199,7 +194,7 @@ function Dashboard() {
           </Grid>
         </MDBox>
       </MDBox>
-      <Footer />
+      {/* <Footer /> */}
     </DashboardLayout>
   );
 }

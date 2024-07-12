@@ -40,7 +40,6 @@ export default function data(category) {
     axios
       .get("http://localhost:8080/api/v1/programInfo/table/"+category)
       .then((response) => {
-        // API 응답에서 result 안의 tableResponseDtoList를 eventsData로 설정
         setEventsData(response.data.result.tableResponseDtoList);
       })
       .catch((error) => {
@@ -48,8 +47,8 @@ export default function data(category) {
       });
   };
 
-  const handleClick = () => {
-    navigate("/billing");
+  const handleClick = ( id ) => {
+    navigate(`/billing/${id}`);
   };
   
   useEffect(() => {
@@ -59,7 +58,7 @@ export default function data(category) {
   useEffect(() => {
     if (eventsData.length > 0) {
       const newRows = eventsData.map((data, index) => ({
-        title: <Author name={data.programName}/>,
+        title: <Author name={data.programName} id={data.programInfoId}/>,
         count: <Job title={data.quantityCount} />,
         use: data.used ? (
                 <MDBox ml={-1}>
@@ -87,14 +86,12 @@ export default function data(category) {
     }
   }, [eventsData]);
 
-  const Author = ({ image, name, email }) => (
-    <MDBox display="flex" alignItems="center" lineHeight={1} onClick={handleClick} >
-      <MDAvatar src={image} name={name} size="sm" />
+  const Author = ({ name, id}) => (
+    <MDBox display="flex" alignItems="center" lineHeight={1} onClick={() => handleClick(id)}  >
       <MDBox ml={2} lineHeight={1}>
         <MDTypography display="block" variant="button" fontWeight="medium">
           {name}
-        </MDTypography>
-        <MDTypography variant="caption">{email}</MDTypography>
+        </MDTypography> 
       </MDBox>
     </MDBox>
   );

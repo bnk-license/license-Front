@@ -69,6 +69,10 @@ const routes = [
     route: "/billing",
     component: <Billing />,
   },
+  {
+    route: "/billing/:id",
+    component: <Billing />,
+  },
 ];
 
 export default routes;

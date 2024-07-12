@@ -6,14 +6,15 @@ import MDBox from "components/MDBox";
 import MDButton from "components/MDButton";
 import MDTypography from "components/MDTypography";
 import Bill from "layouts/billing/components/Bill";
+import { useParams } from "react-router-dom";
 
 function BillingInformation(programInfoId) {
   const [licenseList, setLicenseList] = useState([]);
+  const { id } = useParams();
 
   const getLicenseList = () => {
     axios
-      .get("http://localhost:8080/api/v1/licenseInfo/licenseInfo/" + 55)
-      // .get("http://localhost:8080/api/v1/licenseInfo/licenseInfo/" + programInfoId)
+      .get("http://localhost:8080/api/v1/licenseInfo/licenseInfo/" + id)
       .then((response) => {
         console.log("" + response.data.result.licenseInfoResponseDtoList);
         setLicenseList(response.data.result.licenseInfoResponseDtoList);
