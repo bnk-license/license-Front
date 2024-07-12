@@ -66,10 +66,6 @@ const routes = [
     component: <Tables />,
   },
   {
-    type: "collapse",
-    name: "현황 자세히 보기",
-    key: "billing",
-    icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/billing",
     component: <Billing />,
   },

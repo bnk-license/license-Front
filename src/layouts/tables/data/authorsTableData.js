@@ -27,11 +27,14 @@ import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 export default function data(category) {
 
   const [eventsData, setEventsData] = useState([]);
   const [rows, setRows] = useState([]);
+  const navigate = useNavigate();
   
   const seatHandle = () => {
     axios
@@ -44,6 +47,10 @@ export default function data(category) {
         console.error("Error fetching data: ", error);
       });
   };
+
+  const handleClick = () => {
+    navigate("/billing");
+  };
   
   useEffect(() => {
     seatHandle();
@@ -52,7 +59,7 @@ export default function data(category) {
   useEffect(() => {
     if (eventsData.length > 0) {
       const newRows = eventsData.map((data, index) => ({
-        title: <Author name={data.programName} />,
+        title: <Author name={data.programName}/>,
         count: <Job title={data.quantityCount} />,
         use: data.used ? (
                 <MDBox ml={-1}>
@@ -81,7 +88,7 @@ export default function data(category) {
   }, [eventsData]);
 
   const Author = ({ image, name, email }) => (
-    <MDBox display="flex" alignItems="center" lineHeight={1}>
+    <MDBox display="flex" alignItems="center" lineHeight={1} onClick={handleClick} >
       <MDAvatar src={image} name={name} size="sm" />
       <MDBox ml={2} lineHeight={1}>
         <MDTypography display="block" variant="button" fontWeight="medium">

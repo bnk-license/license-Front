@@ -30,7 +30,7 @@
     "react-dom": "18.2.0",
     "react-github-btn": "1.4.0",
     "react-modal": "^3.16.1",
-    "react-router-dom": "6.11.0",
+    "react-router-dom": "^6.11.0",
     "react-scripts": "5.0.1",
     "react-table": "7.8.0",
     "stylis": "4.1.4",
