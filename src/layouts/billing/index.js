@@ -30,13 +30,20 @@ import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 import PaymentMethod from "layouts/billing/components/PaymentMethod";
 import Invoices from "layouts/billing/components/Invoices";
 import BillingInformation from "layouts/billing/components/BillingInformation";
-import Transactions from "layouts/billing/components/Transactions";
+import ProgramInfo from "./components/ProgramInfo";
 
 function Billing() {
   return (
     <DashboardLayout>
       <DashboardNavbar absolute isMini name ={"현황자세히 보기"}/>
       <MDBox mt={8}>
+        <MDBox mb={3}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={12}>
+              <ProgramInfo/>
+            </Grid>
+          </Grid>
+        </MDBox>
         <MDBox mb={3}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={12}>
