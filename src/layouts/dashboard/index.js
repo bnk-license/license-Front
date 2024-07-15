@@ -135,10 +135,7 @@ function Dashboard() {
               programInfoId: data.programInfoId,
             };
           }
-
-          
         });
-
         setEventsData(newEvents);
       })
       .catch((error) => {
