@@ -49,6 +49,7 @@ function Dashboard() {
   const [searchTerm, setSearchTerm] = useState(''); 
   const [stats, setStats] = useState({licenseCount: 0, licenseCost: 0, notUsedLicenseCount: 0, notUsedLicenseCost: 0});
   const [eventsData, setEventsData] = useState([]);
+  const [reportdata, setReportdata] = useState([]);
   const getCurrentTime = () => {
     const now = new Date();
     return now.toLocaleDateString();
@@ -93,8 +94,11 @@ function Dashboard() {
     axios
       .get("http://localhost:8080/api/v1/programInfo/calender/"+category)
       .then((response) => {
-        const newEvents = response.data.result.calenderResponseDtoList.map((data) => {
 
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth();
+        const newEvents = response.data.result.calenderResponseDtoList.map((data) => {
           if(searchTerm != ""){
             const results = data.programName.toLowerCase().includes(searchTerm.toLowerCase())
 
@@ -135,10 +139,9 @@ function Dashboard() {
               programInfoId: data.programInfoId,
             };
           }
-
-          
         });
-
+        const filteredByMonth = newEvents.filter(item => item.end.getMonth() === currentMonth);
+        setReportdata(filteredByMonth);
         setEventsData(newEvents);
       })
       .catch((error) => {
@@ -156,7 +159,7 @@ function Dashboard() {
     <DashboardLayout>
       <DashboardNavbar name={"중요정보 한눈에 보기"} searchTerm={searchTerm} setSearchTerm={setSearchTerm}
         description ={stats}
-        programinfos = {eventsData}
+        programinfos = {reportdata}
       />
       <div style={{}}>
       <Categorys category={category} setCategory={setCategory}/>
