@@ -154,7 +154,10 @@ function Dashboard() {
 
   return (
     <DashboardLayout>
-      <DashboardNavbar name={"중요정보 한눈에 보기"} searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
+      <DashboardNavbar name={"중요정보 한눈에 보기"} searchTerm={searchTerm} setSearchTerm={setSearchTerm}
+        description ={stats}
+        programinfos = {eventsData}
+      />
       <div style={{}}>
       <Categorys category={category} setCategory={setCategory}/>
       </div>

@@ -56,6 +56,7 @@ import MDButton from "components/MDButton";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import malgunFontBase64 from "assets/font/malgun";
+import axios from "axios";
 
 function DashboardNavbar({ absolute, light, isMini, name, searchTerm, setSearchTerm, description, programinfos }) {
   const [navbarType, setNavbarType] = useState();
@@ -134,22 +135,56 @@ function DashboardNavbar({ absolute, light, isMini, name, searchTerm, setSearchT
   };
 
 
-  const createPdf = (malgunFont) => {
+  const getProgramInfo = async (id) => {
+    try {
+      console.log("id: " + id);
+  
+      const response = await axios.get("http://localhost:8080/api/v1/programInfo/programInfo/" + id);
+      console.log("" + response.data.result.programName);
+  
+      return [
+        { content: response.data.result.programName ? response.data.result.programName : '', styles: { halign: 'center' } },
+        { content: response.data.result.quantityCount ? response.data.result.quantityCount : '', styles: { halign: 'center' } },
+        { content: response.data.result.usedCount ? response.data.result.usedCount : '', styles: { halign: 'center' } },
+        { content: response.data.result.price ? response.data.result.price : '', styles: { halign: 'center' } }
+      ];
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+      return [];
+    }
+  };
+  
+  const fetchProgramInfos = async (programinfos) => {
+    try {
+      const promises = programinfos.map(data => getProgramInfo(data.programInfoId));
+      const results = await Promise.all(promises);
+  
+      // 결과를 flat하게 만든다.
+      const dataList = results;
+      console.log(dataList);
+      return dataList;
+    } catch (error) {
+      console.error("Error fetching program infos: ", error);
+      return [];
+    }
+  };
+  
+  const createPdf = async (malgunFont) => {
     const doc = new jsPDF('p', 'mm', 'a4');
-
+  
     if (malgunFont) {
       // Add custom font
       doc.addFileToVFS('malgun.ttf', malgunFont);
       doc.addFont('malgun.ttf', 'malgun', 'normal');
       doc.setFont('malgun');
-
+  
       // Title
       const title = '월간 라이선스 보고서';
       const titleWidth = doc.getTextWidth(title);
       const pageWidth = doc.internal.pageSize.getWidth();
       const titleXPos = (pageWidth - titleWidth) / 2;
       doc.text(title, titleXPos, 30);
-
+  
       // 요약 정보 테이블
       doc.text("요약 정보", 10, 50); // Adjust vertical position as needed
       doc.autoTable({
@@ -164,14 +199,16 @@ function DashboardNavbar({ absolute, light, isMini, name, searchTerm, setSearchT
         styles: { font: 'malgun', fontStyle: 'normal' },
         head: [['만료임박 제품개수', '재구매시 지출 예상비용', '미사용 라이선스 개수','절감 가능 비용']],
         body: [
-          [{ content: '데이터1', styles: { halign: 'center' } },
-            { content: '데이터2', styles: { halign: 'center' } },
-            { content: '데이터3', styles: { halign: 'center' } },
-            { content: '데이터4', styles: { halign: 'center' } }]
+          [
+            { content: description.licenseCount ? description.licenseCount.toLocaleString() + '개' : '', styles: { halign: 'center' } },
+            { content: description.licenseCost ? description.licenseCost.toLocaleString() + '원' : '', styles: { halign: 'center' } },
+            { content: description.notUsedLicenseCount ? description.notUsedLicenseCount.toLocaleString() + '개' : '', styles: { halign: 'center' } },
+            { content: description.notUsedLicenseCost ? description.notUsedLicenseCost.toLocaleString() + '원' : '', styles: { halign: 'center' } }]
         ]
       });
-
+  
       // 라이선스 정보 테이블
+      const tablerows = await fetchProgramInfos(programinfos);
       const summaryTableHeight = doc.previousAutoTable.finalY + 10; // Calculate the height of the previous table
       doc.text("프로그램 정보", 10, summaryTableHeight + 20); // Adjust vertical position as needed
       doc.autoTable({
@@ -184,25 +221,16 @@ function DashboardNavbar({ absolute, light, isMini, name, searchTerm, setSearchT
         margin: { left: 10, top: 10, right: 10 },
         tableWidth: "100%",
         styles: { font: 'malgun', fontStyle: 'normal' },
-        head: [['프로그램 명', '보유수량', '사용수량', '개당금액(단위:원)']],
-        body: [
-          [{ content: '데이터1', styles: { halign: 'center' } },
-          { content: '데이터2', styles: { halign: 'center' } },
-          { content: '데이터3', styles: { halign: 'center' } },
-          { content: '데이터4', styles: { halign: 'center' } }]
-        ]
+        head: [['프로그램 명', '보유수량', '사용수량', '개당금액']],
+        body: tablerows
       });
-
+  
       // Save the PDF
       doc.save('example.pdf');
     } else {
       console.error('Font could not be loaded');
     }
-  } 
-
-  useEffect(() => {
-    
-  }, [])
+  }
 
   return (
     <AppBar
@@ -302,7 +330,12 @@ DashboardNavbar.propTypes = {
   name : PropTypes.string,
   searchTerm: PropTypes.string,
   setSearchTerm: PropTypes.string,
-  description : PropTypes.object,
+  description : PropTypes.shape({
+    licenseCount: PropTypes.number,
+    licenseCost: PropTypes.number,
+    notUsedLicenseCount: PropTypes.number,
+    notUsedLicenseCost: PropTypes.number,
+  }),
   programinfos : PropTypes.object,
 };
 
