@@ -38,11 +38,12 @@ import axios from "axios";
 function Tables() {
   const { columns: pColumns, rows: pRows } = projectsTableData();
   const [category, setCategory] = useState(0);
-  const { columns, rows } = authorsTableData(category);
   const [searchTerm, setSearchTerm] = useState(''); 
+  const { columns, rows } = authorsTableData(category,searchTerm);
 
   useEffect(() => {
-  }, [category]);
+    console.log(searchTerm);
+  }, [category, searchTerm]);
 
   return (
     <DashboardLayout>

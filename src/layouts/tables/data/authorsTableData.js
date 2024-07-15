@@ -30,17 +30,32 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 
-export default function data(category) {
+export default function data(category,searchTerm) {
 
   const [eventsData, setEventsData] = useState([]);
   const [rows, setRows] = useState([]);
   const navigate = useNavigate();
+
+  const searchFilter = row => {
+    return row.programName.toLowerCase().includes(searchTerm.toLowerCase());
+  };
   
   const seatHandle = () => {
     axios
       .get("http://localhost:8080/api/v1/programInfo/table/"+category)
       .then((response) => {
-        setEventsData(response.data.result.tableResponseDtoList);
+        
+        console.log("response.data: ", response.data.result.tableResponseDtoList.filter(searchFilter).length);
+        if(!response.data.result.tableResponseDtoList.filter(searchFilter).length){
+          console.log("test");
+          setEventsData([]);
+        }
+        else if(searchTerm != ""){
+          setEventsData(response.data.result.tableResponseDtoList.filter(searchFilter));
+        }
+        else {
+          setEventsData(response.data.result.tableResponseDtoList);
+        }
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
@@ -53,10 +68,9 @@ export default function data(category) {
   
   useEffect(() => {
     seatHandle();
-  }, [category]);
+  }, [category, searchTerm]);
   
   useEffect(() => {
-    if (eventsData.length > 0) {
       const newRows = eventsData.map((data, index) => ({
         title: <Author name={data.programName} id={data.programInfoId}/>,
         count: <Job title={data.quantityCount} />,
@@ -83,7 +97,6 @@ export default function data(category) {
         expiration: (<MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">{data.licenseEndDate?data.licenseEndDate:"영구"}</MDTypography>),
       }));
       setRows(newRows);
-    }
   }, [eventsData]);
 
   const Author = ({ name, id}) => (
