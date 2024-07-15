@@ -52,6 +52,7 @@ import {
   setMiniSidenav,
   setOpenConfigurator,
 } from "context";
+import MDButton from "components/MDButton";
 
 function DashboardNavbar({ absolute, light, isMini, name}) {
   const [navbarType, setNavbarType] = useState();
@@ -59,6 +60,7 @@ function DashboardNavbar({ absolute, light, isMini, name}) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
+  const [searchTerm, setSearchTerm] = useState(''); 
 
   useEffect(() => {
     // Setting the navbar type
@@ -123,6 +125,18 @@ function DashboardNavbar({ absolute, light, isMini, name}) {
     },
   });
 
+  const handleSearch = () => {
+    if (searchTerm) {
+      const filtered = filteredData.filter((item) =>
+        item.hostName.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      //setBarChart({ ...barChart, datasets: [{ ...barChart.datasets[0], data: filtered.map((item) => item.licenseCost) }] });
+      //setLineChart({ ...lineChart, datasets: [{ ...lineChart.datasets[0], data: filtered.map((item) => item.licenseCount) }] });
+    } else {
+      statsHandle(); // 검색어가 없으면 전체 데이터로 복구
+    }
+  };
+
   return (
     <AppBar
       position={absolute ? "absolute" : navbarType}
@@ -135,8 +149,28 @@ function DashboardNavbar({ absolute, light, isMini, name}) {
         </MDBox>
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <MDBox pr={1}>
-              {/* <MDInput label="Search here" /> */}
+            <MDBox pt={3} pb={3} px={3} display="flex" alignItems="center">
+              <MDInput
+                label="Search here"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)} // 검색 입력 상태 업데이트
+                fullWidth
+              />
+              <MDButton 
+                variant="gradient" 
+                color="info" 
+                onClick={handleSearch} 
+                style={{ marginLeft: "10px" }}
+              >
+                Search
+              </MDButton>
+              <MDButton 
+                variant="gradient" 
+                color="info" 
+                style={{ marginLeft: "10px" }}
+              >
+                download
+              </MDButton>
             </MDBox>
             {/* <MDBox color={light ? "white" : "inherit"}>
               <Link to="/authentication/sign-in/basic">
