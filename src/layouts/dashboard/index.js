@@ -46,6 +46,7 @@ function Dashboard() {
   const [barChart, setBarChart ] = useState(reportsBarChartData);
   const [lineChart, setLineChart ] = useState(reportsLineChartData);
   const [category, setCategory] = useState(0);
+  const [searchTerm, setSearchTerm] = useState(''); 
   const [stats, setStats] = useState({licenseCount: 0, licenseCost: 0, notUsedLicenseCount: 0, notUsedLicenseCost: 0});
   const [eventsData, setEventsData] = useState([]);
   const getCurrentTime = () => {
@@ -94,22 +95,48 @@ function Dashboard() {
       .then((response) => {
         const newEvents = response.data.result.calenderResponseDtoList.map((data) => {
 
-          let licenseEndDate = data.licenseEndDate || "9999-12-31";
-          const dateParts = licenseEndDate.split('-');
-          const year = parseInt(dateParts[0], 10);
-          const month = parseInt(dateParts[1], 10) - 1; // 월은 0부터 시작합니다.
-          const day = parseInt(dateParts[2], 10);
+          if(searchTerm != ""){
+            const results = data.programName.toLowerCase().includes(searchTerm.toLowerCase())
 
-          // 날짜 객체 생성
-          const start = new Date(year, month, day);
-          const end = new Date(year, month, day);
+            if(results){
+              let licenseEndDate = data.licenseEndDate || "9999-12-31";
+              const dateParts = licenseEndDate.split('-');
+              const year = parseInt(dateParts[0], 10);
+              const month = parseInt(dateParts[1], 10) - 1; // 월은 0부터 시작합니다.
+              const day = parseInt(dateParts[2], 10);
 
-          return {
-            start,
-            end,
-            title: data.programName,
-            programInfoId: data.programInfoId,
-          };
+              // 날짜 객체 생성
+              const start = new Date(year, month, day);
+              const end = new Date(year, month, day);
+
+              return {
+                start,
+                end,
+                title: data.programName,
+                programInfoId: data.programInfoId,
+              };
+            }
+          }
+          else {
+            let licenseEndDate = data.licenseEndDate || "9999-12-31";
+            const dateParts = licenseEndDate.split('-');
+            const year = parseInt(dateParts[0], 10);
+            const month = parseInt(dateParts[1], 10) - 1; // 월은 0부터 시작합니다.
+            const day = parseInt(dateParts[2], 10);
+
+            // 날짜 객체 생성
+            const start = new Date(year, month, day);
+            const end = new Date(year, month, day);
+
+            return {
+              start,
+              end,
+              title: data.programName,
+              programInfoId: data.programInfoId,
+            };
+          }
+
+          
         });
 
         setEventsData(newEvents);
@@ -123,11 +150,11 @@ function Dashboard() {
     setEventsData([]);
     seatHandle();
     statsHandle();
-  }, [category]);
+  }, [category, searchTerm]);
 
   return (
     <DashboardLayout>
-      <DashboardNavbar name={"중요정보 한눈에 보기"}/>
+      <DashboardNavbar name={"중요정보 한눈에 보기"} searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
       <div style={{}}>
       <Categorys category={category} setCategory={setCategory}/>
       </div>

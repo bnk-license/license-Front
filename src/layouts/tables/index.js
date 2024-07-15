@@ -39,13 +39,14 @@ function Tables() {
   const { columns: pColumns, rows: pRows } = projectsTableData();
   const [category, setCategory] = useState(0);
   const { columns, rows } = authorsTableData(category);
+  const [searchTerm, setSearchTerm] = useState(''); 
 
   useEffect(() => {
   }, [category]);
 
   return (
     <DashboardLayout>
-      <DashboardNavbar name={"테이블로 확인하기"}/>
+      <DashboardNavbar name={"테이블로 확인하기"} searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
       <Categorys category={category} setCategory={setCategory}/>
       <MDBox pt={6} pb={3}>
         <Grid container spacing={6}>
