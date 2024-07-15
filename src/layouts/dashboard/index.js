@@ -43,11 +43,11 @@ import MDInput from "components/MDInput";
 
 
 function Dashboard() {
-  const [ barChart, setBarChart ] = useState(reportsBarChartData);
-  const [ lineChart, setLineChart ] = useState(reportsLineChartData);
+  const [barChart, setBarChart ] = useState(reportsBarChartData);
+  const [lineChart, setLineChart ] = useState(reportsLineChartData);
   const [category, setCategory] = useState(0);
   const [stats, setStats] = useState({licenseCount: 0, licenseCost: 0, notUsedLicenseCount: 0, notUsedLicenseCost: 0});
-  const [eventsData, setEventsData] = useState(["asdasd"]);
+  const [eventsData, setEventsData] = useState([]);
   const getCurrentTime = () => {
     const now = new Date();
     return now.toLocaleDateString();
@@ -58,7 +58,6 @@ function Dashboard() {
       .get("http://localhost:8080/api/v1/programInfo/header/"+category)
       .then((response) => {
 
-        console.log(response.data.result);
         setStats(response.data.result);
 
       })
@@ -69,12 +68,11 @@ function Dashboard() {
       axios
       .get("http://localhost:8080/api/v1/programInfo/graph/"+category+"/2024")
       .then((response) => {
-        
-        console.log(response.data.result);
-        console.log(reportsLineChartData.datasets.data);
 
-        const updatedBarChartData = { ...reportsBarChartData };
-        const updatedLineChartData = { ...reportsLineChartData };
+        const updatedBarChartData = JSON.parse(JSON.stringify(reportsBarChartData));
+        const updatedLineChartData = JSON.parse(JSON.stringify(reportsLineChartData));
+
+        console.log(reportsLineChartData);
 
         response.data.result.graphResponseDtoList.map((item, index) => {
           updatedBarChartData.datasets.data[item.month-1]=item.licenseCost;

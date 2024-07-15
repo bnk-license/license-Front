@@ -53,7 +53,6 @@ export default function ReactBigCalendar(eventsData) {
   };
 
   useEffect(() => {
-    console.log(eventsData);
   }, []);
 
   const handleClick = ( event ) => {
