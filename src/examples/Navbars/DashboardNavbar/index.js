@@ -53,8 +53,11 @@ import {
   setOpenConfigurator,
 } from "context";
 import MDButton from "components/MDButton";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import malgunFontBase64 from "assets/font/malgun";
 
-function DashboardNavbar({ absolute, light, isMini, name, searchTerm, setSearchTerm}) {
+function DashboardNavbar({ absolute, light, isMini, name, searchTerm, setSearchTerm, description, programinfos }) {
   const [navbarType, setNavbarType] = useState();
   const [text, setText] = useState();
   const [controller, dispatch] = useMaterialUIController();
@@ -130,6 +133,77 @@ function DashboardNavbar({ absolute, light, isMini, name, searchTerm, setSearchT
     setSearchTerm(text);
   };
 
+
+  const createPdf = (malgunFont) => {
+    const doc = new jsPDF('p', 'mm', 'a4');
+
+    if (malgunFont) {
+      // Add custom font
+      doc.addFileToVFS('malgun.ttf', malgunFont);
+      doc.addFont('malgun.ttf', 'malgun', 'normal');
+      doc.setFont('malgun');
+
+      // Title
+      const title = '월간 라이선스 보고서';
+      const titleWidth = doc.getTextWidth(title);
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const titleXPos = (pageWidth - titleWidth) / 2;
+      doc.text(title, titleXPos, 30);
+
+      // 요약 정보 테이블
+      doc.text("요약 정보", 10, 50); // Adjust vertical position as needed
+      doc.autoTable({
+        headStyles: {
+          halign: 'center',
+          valign: 'middle',
+          fillColor: [215, 25, 31] // Header background color
+        },
+        startY: 60,
+        margin: { left: 10, top: 10, right: 10 },
+        tableWidth: "100%",
+        styles: { font: 'malgun', fontStyle: 'normal' },
+        head: [['만료임박 제품개수', '재구매시 지출 예상비용', '미사용 라이선스 개수','절감 가능 비용']],
+        body: [
+          [{ content: '데이터1', styles: { halign: 'center' } },
+            { content: '데이터2', styles: { halign: 'center' } },
+            { content: '데이터3', styles: { halign: 'center' } },
+            { content: '데이터4', styles: { halign: 'center' } }]
+        ]
+      });
+
+      // 라이선스 정보 테이블
+      const summaryTableHeight = doc.previousAutoTable.finalY + 10; // Calculate the height of the previous table
+      doc.text("프로그램 정보", 10, summaryTableHeight + 20); // Adjust vertical position as needed
+      doc.autoTable({
+        headStyles: {
+          halign: 'center',
+          valign: 'middle',
+          fillColor: [215, 25, 31] // Header background color
+        },
+        startY: summaryTableHeight + 30,
+        margin: { left: 10, top: 10, right: 10 },
+        tableWidth: "100%",
+        styles: { font: 'malgun', fontStyle: 'normal' },
+        head: [['프로그램 명', '보유수량', '사용수량', '개당금액(단위:원)']],
+        body: [
+          [{ content: '데이터1', styles: { halign: 'center' } },
+          { content: '데이터2', styles: { halign: 'center' } },
+          { content: '데이터3', styles: { halign: 'center' } },
+          { content: '데이터4', styles: { halign: 'center' } }]
+        ]
+      });
+
+      // Save the PDF
+      doc.save('example.pdf');
+    } else {
+      console.error('Font could not be loaded');
+    }
+  } 
+
+  useEffect(() => {
+    
+  }, [])
+
   return (
     <AppBar
       position={absolute ? "absolute" : navbarType}
@@ -161,6 +235,7 @@ function DashboardNavbar({ absolute, light, isMini, name, searchTerm, setSearchT
                 variant="gradient" 
                 color="info" 
                 style={{ marginLeft: "10px" }}
+                onClick={() => createPdf(malgunFontBase64)}
               >
                 download
               </MDButton>
@@ -226,7 +301,9 @@ DashboardNavbar.propTypes = {
   isMini: PropTypes.bool,
   name : PropTypes.string,
   searchTerm: PropTypes.string,
-  setSearchTerm: PropTypes.string
+  setSearchTerm: PropTypes.string,
+  description : PropTypes.object,
+  programinfos : PropTypes.object,
 };
 
 export default DashboardNavbar;
