@@ -40,6 +40,8 @@ import Categorys from "layouts/categorys/categorys";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import MDInput from "components/MDInput";
+import MDTypography from "components/MDTypography";
+import { Card } from "@mui/material";
 
 
 function Dashboard() {
@@ -167,9 +169,31 @@ function Dashboard() {
       <Categorys category={category} setCategory={setCategory}/>
       </div>
 
-      <div style={{width: "90%", marginLeft: "30px",padding: "10px"}}>
-        <ReactBigCalendar category={category} eventsData={eventsData}/>
-      </div>
+      <MDBox pt={6} pb={3}>
+        <Grid container spacing={6}>
+          <Grid item xs={12}>
+            <Card>
+              <MDBox
+                mx={2}
+                mt={-3}
+                py={3}
+                px={2}
+                variant="gradient"
+                bgColor="info"
+                borderRadius="lg"
+                coloredShadow="info"
+              >
+                <MDTypography variant="h6" color="white">
+                  라이선스 달력
+                </MDTypography>
+              </MDBox>
+              <div style={{width: "90%", marginLeft: "30px",padding: "10px",height:"10px"}}></div>  
+              <ReactBigCalendar category={category} eventsData={eventsData}/>
+              <div style={{width: "90%", marginLeft: "30px",padding: "10px",height:"10px"}}></div>
+            </Card>
+          </Grid>
+        </Grid>
+      </MDBox>
       <h2 style={{marginLeft: "1%", marginTop: "2%", marginBottom:"1%"}}> 라이선스 통계 현황</h2>  
       {/* 부서 선택에 따라 단어가 달라져야함 */}
       <MDBox py={3}>
@@ -179,7 +203,7 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="dark"
                 icon="weekend"
-                title="만료임박 제품개수"
+                title="한달 내 만료 제품개수"
                 count={stats.licenseCount?(stats.licenseCount.toLocaleString()+"개"):"0개"}
                 // percentage={{
                 //   color: "success",
@@ -240,7 +264,7 @@ function Dashboard() {
               <MDBox mb={3}>
                 <ReportsBarChart
                   color="info"
-                  title="월별구매비용"
+                  title="월별구매예정비용"
                   description="(단위:원)"
                   date={`${getCurrentTime()}`}
                   chart={barChart}
@@ -251,7 +275,7 @@ function Dashboard() {
               <MDBox mb={3}>
                 <ReportsBarChart
                   color="success"
-                  title="월별구매개수"
+                  title="월별구매예정개수"
                   description="(단위:개)"
                   date={`${getCurrentTime()}`}
                   chart={lineChart}

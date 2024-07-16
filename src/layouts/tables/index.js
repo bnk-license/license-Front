@@ -64,7 +64,7 @@ function Tables() {
                 coloredShadow="info"
               >
                 <MDTypography variant="h6" color="white">
-                  License Table
+                  라이선스 표
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>
