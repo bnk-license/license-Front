@@ -142,7 +142,7 @@ function Dashboard() {
         });
         setEventsData(newEvents);
         console.log(newEvents);
-        const filteredByMonth = newEvents.filter(item => {if(item!== undefined){console.log(item);return item.end.getMonth() === currentMonth}});
+        const filteredByMonth = newEvents.filter(item => {if(item!== undefined){console.log(item);return (item.end.getMonth() === currentMonth && item.end.getFullYear() === currentYear)}});
         setReportdata(filteredByMonth);
 
       })
