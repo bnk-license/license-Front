@@ -136,8 +136,8 @@ function DashboardNavbar({ absolute, light, isMini, name, searchTerm, setSearchT
 
       setNewLicenseCount((prevCount) => prevCount + response.data.result.quantityCount);
       setNewLicenseCost((prevCost) => prevCost + response.data.result.quantityCount * response.data.result.price);
-      setNotUsedLicenseCount((prevCount) => prevCount + response.data.result.usedCount);
-      setNewNotUsedLicenseCost((prevCost) => prevCost + response.data.result.usedCount * response.data.result.price);
+      setNotUsedLicenseCount((prevCount) => prevCount + (response.data.result.quantityCount - response.data.result.usedCount));
+      setNewNotUsedLicenseCost((prevCost) => prevCost + ((response.data.result.quantityCount - response.data.result.usedCount) * response.data.result.price));
 
       return [
         { content: response.data.result.programName || '', styles: { halign: 'center' } },
