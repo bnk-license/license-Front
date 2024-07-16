@@ -145,7 +145,7 @@ function DashboardNavbar({ absolute, light, isMini, name, searchTerm, setSearchT
       return [
         { content: response.data.result.programName ? response.data.result.programName : '', styles: { halign: 'center' } },
         { content: response.data.result.quantityCount ? response.data.result.quantityCount : '', styles: { halign: 'center' } },
-        { content: response.data.result.usedCount ? response.data.result.usedCount : '', styles: { halign: 'center' } },
+        { content: response.data.result.usedCount ? response.data.result.usedCount : '0', styles: { halign: 'center' } },
         { content: response.data.result.price ? response.data.result.price : '', styles: { halign: 'center' } }
       ];
     } catch (error) {
