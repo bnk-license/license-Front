@@ -226,7 +226,7 @@ function DashboardNavbar({ absolute, light, isMini, name, searchTerm, setSearchT
       });
   
       // Save the PDF
-      doc.save('example.pdf');
+      doc.save('TLMS report.pdf');
     } else {
       console.error('Font could not be loaded');
     }
