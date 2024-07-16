@@ -140,9 +140,11 @@ function Dashboard() {
             };
           }
         });
-        const filteredByMonth = newEvents.filter(item => item.end.getMonth() === currentMonth);
-        setReportdata(filteredByMonth);
         setEventsData(newEvents);
+        console.log(newEvents);
+        const filteredByMonth = newEvents.filter(item => {if(item!== undefined){console.log(item);return item.end.getMonth() === currentMonth}});
+        setReportdata(filteredByMonth);
+
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
